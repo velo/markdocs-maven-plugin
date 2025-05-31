@@ -27,14 +27,14 @@ public class PluginDescriptorParser {
         descriptor.setName(getTextContent(root, "name"));
         descriptor.setDescription(getTextContent(root, "description"));
 
-        NodeList goalsList = root.getElementsByTagName("goals");
-        if (goalsList.getLength() > 0) {
-            Element goalsElement = (Element) goalsList.item(0);
-            NodeList goalNodes = goalsElement.getElementsByTagName("goal");
+        NodeList mojosList = root.getElementsByTagName("mojos");
+        if (mojosList.getLength() > 0) {
+            Element mojosElement = (Element) mojosList.item(0);
+            NodeList mojoNodes = mojosElement.getElementsByTagName("mojo");
             
-            for (int i = 0; i < goalNodes.getLength(); i++) {
-                Element goalElement = (Element) goalNodes.item(i);
-                Goal goal = parseGoal(goalElement);
+            for (int i = 0; i < mojoNodes.getLength(); i++) {
+                Element mojoElement = (Element) mojoNodes.item(i);
+                Goal goal = parseMojo(mojoElement);
                 descriptor.addGoal(goal);
             }
         }
@@ -42,15 +42,15 @@ public class PluginDescriptorParser {
         return descriptor;
     }
 
-    private Goal parseGoal(Element goalElement) {
+    private Goal parseMojo(Element mojoElement) {
         Goal goal = new Goal();
         
-        goal.setName(getTextContent(goalElement, "goal"));
-        goal.setDescription(getTextContent(goalElement, "description"));
-        goal.setImplementation(getTextContent(goalElement, "implementation"));
-        goal.setPhase(getTextContent(goalElement, "phase"));
+        goal.setName(getTextContent(mojoElement, "goal"));
+        goal.setDescription(getTextContent(mojoElement, "description"));
+        goal.setImplementation(getTextContent(mojoElement, "implementation"));
+        goal.setPhase(getTextContent(mojoElement, "phase"));
 
-        NodeList parametersNodeList = goalElement.getElementsByTagName("parameters");
+        NodeList parametersNodeList = mojoElement.getElementsByTagName("parameters");
         if (parametersNodeList.getLength() > 0) {
             Element parametersElement = (Element) parametersNodeList.item(0);
             NodeList parameterNodes = parametersElement.getElementsByTagName("parameter");
