@@ -91,6 +91,40 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
             </plugin>
+            
+            <!-- Easy JaCoCo Maven Plugin for code coverage -->
+            <plugin>
+                <groupId>com.marvinformatics.jacoco</groupId>
+                <artifactId>easy-jacoco-maven-plugin</artifactId>
+                <version>0.1.4</version>
+                <configuration>
+                    <!-- Project-wide coverage check -->
+                    <projectRules>
+                        <rule>
+                            <element>BUNDLE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>LINE</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>BRANCH</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.70</minimum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </projectRules>
+                    <!-- Halt build on coverage failure -->
+                    <haltOnFailure>true</haltOnFailure>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
