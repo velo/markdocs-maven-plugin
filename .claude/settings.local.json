@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(rm:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

@@ -1,130 +1,239 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0           http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.marvinformatics.plugins</groupId>
-    <artifactId>markdocs-maven-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
+  <groupId>com.marvinformatics.plugins</groupId>
+  <artifactId>markdocs-maven-plugin</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
 
-    <name>MarkDocs Maven Plugin</name>
-    <description>Maven plugin to generate markdown documentation from plugin descriptors</description>
+  <name>MarkDocs Maven Plugin</name>
+  <description>Maven plugin to generate markdown documentation from plugin descriptors</description>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.version>3.8.1</maven.version>
-    </properties>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.version>3.8.1</maven.version>
 
-    <dependencies>
-        <!-- Maven Plugin API -->
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>${maven.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <!-- Maven Plugin Annotations -->
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.6.4</version>
-            <scope>provided</scope>
-        </dependency>
+    <git-code-format-maven-plugin.version>5.3</git-code-format-maven-plugin.version>
+    <sortpom.plugin.version>4.0.0</sortpom.plugin.version>
+  </properties>
 
-        <!-- Maven Core -->
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-            <version>${maven.version}</version>
-            <scope>provided</scope>
-        </dependency>
+  <dependencies>
+    <!-- Maven Plugin API -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <!-- Commons IO for file operations -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
+    <!-- Maven Plugin Annotations -->
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.6.4</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <!-- Testing -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <!-- Maven Core -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-    <build>
+    <!-- Commons IO for file operations -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.9.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.24.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.6.4</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M9</version>
+      </plugin>
+
+      <!-- Code formatting and POM sorting -->
+      <plugin>
+        <groupId>com.cosium.code</groupId>
+        <artifactId>git-code-format-maven-plugin</artifactId>
+        <version>${git-code-format-maven-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.cosium.code</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>${git-code-format-maven-plugin.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <!-- On commit, format the modified files -->
+          <execution>
+            <id>install-formatter-hook</id>
+            <goals>
+              <goal>install-hooks</goal>
+            </goals>
+            <!-- inherited = false means it won't re-run in submodules if not desired -->
+            <inherited>false</inherited>
+          </execution>
+          <!-- On Maven verify, fail if code is not formatted -->
+          <execution>
+            <id>validate-code-format</id>
+            <goals>
+              <goal>validate-code-format</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <version>${sortpom.plugin.version}</version>
+        <configuration>
+          <keepBlankLines>true</keepBlankLines>
+          <lineSeparator>\n</lineSeparator>
+          <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+          <createBackupFile>false</createBackupFile>
+        </configuration>
+      </plugin>
+
+      <!-- Easy JaCoCo Maven Plugin for code coverage -->
+      <plugin>
+        <groupId>com.marvinformatics.jacoco</groupId>
+        <artifactId>easy-jacoco-maven-plugin</artifactId>
+        <version>0.1.4</version>
+        <configuration>
+          <!-- Project-wide coverage check -->
+          <projectRules>
+            <rule>
+              <element>BUNDLE</element>
+              <limits>
+                <limit>
+                  <counter>INSTRUCTION</counter>
+                  <value>COVEREDRATIO</value>
+                  <minimum>0.80</minimum>
+                </limit>
+                <limit>
+                  <counter>LINE</counter>
+                  <value>COVEREDRATIO</value>
+                  <minimum>0.80</minimum>
+                </limit>
+                <limit>
+                  <counter>BRANCH</counter>
+                  <value>COVEREDRATIO</value>
+                  <minimum>0.70</minimum>
+                </limit>
+              </limits>
+            </rule>
+          </projectRules>
+          <!-- Halt build on coverage failure -->
+          <haltOnFailure>true</haltOnFailure>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- Useful profile for local dev (forces code format, etc.) -->
+    <profile>
+      <id>dev</id>
+      <properties>
+        <gcf.skipInstallHooks>false</gcf.skipInstallHooks>
+      </properties>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.6.4</version>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M9</version>
-            </plugin>
-            
-            <!-- Easy JaCoCo Maven Plugin for code coverage -->
-            <plugin>
-                <groupId>com.marvinformatics.jacoco</groupId>
-                <artifactId>easy-jacoco-maven-plugin</artifactId>
-                <version>0.1.4</version>
-                <configuration>
-                    <!-- Project-wide coverage check -->
-                    <projectRules>
-                        <rule>
-                            <element>BUNDLE</element>
-                            <limits>
-                                <limit>
-                                    <counter>INSTRUCTION</counter>
-                                    <value>COVEREDRATIO</value>
-                                    <minimum>0.80</minimum>
-                                </limit>
-                                <limit>
-                                    <counter>LINE</counter>
-                                    <value>COVEREDRATIO</value>
-                                    <minimum>0.80</minimum>
-                                </limit>
-                                <limit>
-                                    <counter>BRANCH</counter>
-                                    <value>COVEREDRATIO</value>
-                                    <minimum>0.70</minimum>
-                                </limit>
-                            </limits>
-                        </rule>
-                    </projectRules>
-                    <!-- Halt build on coverage failure -->
-                    <haltOnFailure>true</haltOnFailure>
-                </configuration>
-            </plugin>
+          <plugin>
+            <groupId>com.cosium.code</groupId>
+            <artifactId>git-code-format-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>format-code</id>
+                <goals>
+                  <goal>format-code</goal>
+                </goals>
+                <phase>initialize</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.ekryd.sortpom</groupId>
+            <artifactId>sortpom-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>format</id>
+                <goals>
+                  <goal>sort</goal>
+                </goals>
+                <phase>initialize</phase>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- just compile, skip all other checks -->
+      <id>quickbuild</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <gcf.skip>true</gcf.skip>
+      </properties>
+    </profile>
+
+    <profile>
+      <!-- helper profile to proper configure eclipse -->
+      <id>m2e</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <properties>
+        <gcf.skip>true</gcf.skip>
+      </properties>
+      <build>
+        <directory>${project.basedir}/m2e-target</directory>
+      </build>
+    </profile>
+  </profiles>
 </project>
